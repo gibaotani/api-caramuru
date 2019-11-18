@@ -3,8 +3,6 @@ import Object.membro;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +29,7 @@ public class membroDao extends membro {
     public membro popMembroList(){
        return membroList.get(0);
     }
-
+    //criar classe de exceção para o tratamento da validação
     public  String validateMembro(membro membro)throws ExecutionException , InterruptedException{
         CollectionReference membros = db.collection("membro");
         Query query = membros.whereEqualTo("CPF", membro.getCPF());
@@ -66,6 +64,7 @@ public class membroDao extends membro {
     public  void updateMembroDB(membro membro)throws ExecutionException, InterruptedException{
 
 
+
     }
 
     public  void deleteMembroDB(membro membro){
@@ -76,7 +75,6 @@ public class membroDao extends membro {
 
 
     }
-
 
 
 
