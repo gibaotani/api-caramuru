@@ -2,6 +2,8 @@ package memberDao;
 import Object.membro;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class membroDao extends membro {
         }
     }
 
-    public  void addMembroDB(membro membro) throws ExecutionException, InterruptedException {
+    public String addMembroDB(membro membro) throws ExecutionException, InterruptedException {
 
         if(validateMembro(membro)=="0"){
             Map<String, Object> docData = new HashMap<>();
@@ -52,15 +54,26 @@ public class membroDao extends membro {
             docData.put("Date",membro.getDate());
             ApiFuture<WriteResult> future = db.collection("membro").document(membro.getCPF()).set(docData);
             System.out.println("Update time: "+ future.get().getUpdateTime());
+            Gson gson = new Gson();
+            String json= gson.toJson(docData);
+            return json;
         }if(validateMembro(membro)=="1"){
             System.out.println("Usuario ja cadastrado");
         }
-
+            return null;
     }
 
     public  void updateMembroDB(membro membro)throws ExecutionException, InterruptedException{
 
-        
+
+    }
+
+    public  void deleteMembroDB(membro membro){
+
+
+    }
+    public void readMembroDB(membro membro){
+
 
     }
 
