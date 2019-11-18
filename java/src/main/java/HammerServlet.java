@@ -33,6 +33,7 @@ public class HammerServlet  extends HttpServlet{
             membro.setDate(date);
         } catch (ParseException e) {
             e.printStackTrace();
+            System.out.println("Não foi possivel converter a Data");
         }
         membro.setLink_foto(req.getParameter("link_foto"));
         membro.setRegistro_UEB(req.getParameter("resgistro_ueb"));
@@ -40,9 +41,11 @@ public class HammerServlet  extends HttpServlet{
         try {
             membroDao.addMembroDB(membro);
         } catch (ExecutionException e) {
+            System.out.println("Não foi possivel adiconar o membro");
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            System.out.println("Não foi possivel adiconar o membro");
         }
 
 
