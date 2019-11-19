@@ -26,6 +26,7 @@ public class HammerPOST extends HttpServlet{
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException   {
         PrintWriter out = resp.getWriter();
+        out.println("Test");
         membro membro = new membro();
         membro.setNome(req.getParameter("nome"));
         membro.setCPF(req.getParameter("CPF"));

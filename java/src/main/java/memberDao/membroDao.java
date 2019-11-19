@@ -29,10 +29,12 @@ public class membroDao extends membro {
     public membro popMembroList(){
        return membroList.get(0);
     }
+
     //criar classe de exceção para o tratamento da validação
-    public  String validateMembro(membro membro)throws ExecutionException , InterruptedException{
+
+    public  String validateMembro(String CPF)throws ExecutionException , InterruptedException{
         CollectionReference membros = db.collection("membro");
-        Query query = membros.whereEqualTo("CPF", membro.getCPF());
+        Query query = membros.whereEqualTo("CPF", CPF);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         if(querySnapshot != null){
             return "1";
@@ -43,7 +45,7 @@ public class membroDao extends membro {
 
     public String addMembroDB(membro membro) throws ExecutionException, InterruptedException {
 
-        if(validateMembro(membro)=="0"){
+        if(validateMembro(membro.getCPF())=="0"){
             Map<String, Object> docData = new HashMap<>();
             docData.put("Nome", membro.getNome());
             docData.put("CPF", membro.getCPF());
@@ -55,7 +57,7 @@ public class membroDao extends membro {
             Gson gson = new Gson();
             String json= gson.toJson(docData);
             return json;
-        }if(validateMembro(membro)=="1"){
+        }if(validateMembro(membro.getCPF())=="1"){
             System.out.println("Usuario ja cadastrado");
         }
             return null;
@@ -67,9 +69,23 @@ public class membroDao extends membro {
 
     }
 
-    public  void deleteMembroDB(membro membro){
 
+    //Deleta registro de um usuario com base no CPF
+    public  String deleteMembroDB(String CPF)throws ExecutionException, InterruptedException{
 
+        if(validateMembro(CPF)=="0"){
+
+            ApiFuture<WriteResult> writeResult = db.collection("membro").document("CPF").delete();
+
+            System.out.println("Update time:  "+writeResult.get().getUpdateTime());
+
+            return "Usuario deletado com sucesso";
+
+        }if(validateMembro(CPF)=="1"){
+            return "Usuario não encontrado";
+        }else {
+            return "Erro não indentificado";
+        }
     }
     public void readMembroDB(membro membro){
 
