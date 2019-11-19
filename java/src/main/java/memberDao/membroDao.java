@@ -62,9 +62,22 @@ public class membroDao extends membro {
         }
             return null;
     }
+    /* Atualiza um membro utilizando o CPF para localizacao do membro no Cloud Firestore ,  utilizando variavel campo
+    para especificação e a variavel alt como conteudo para substituir o antigo.*/
+    public  String updateMembroDB(String CPF, String campo, String alt)throws ExecutionException, InterruptedException{
 
-    public  void updateMembroDB(membro membro)throws ExecutionException, InterruptedException{
+        if(validateMembro(CPF)=="0"){
+            ApiFuture<WriteResult> writeResult = db.collection("membro").document(CPF).update(campo, alt);
 
+            System.out.println("Update time:  "+writeResult.get().getUpdateTime());
+
+            return "Usuario de CPF : "+CPF+" teve "+campo+" atualizado para "+ alt;
+
+        }if(validateMembro(CPF)=="1"){
+            return "Usuario não encontrado";
+        }else{
+            return "Erro não indentificado";
+        }
 
 
     }
