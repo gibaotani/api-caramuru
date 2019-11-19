@@ -87,11 +87,35 @@ public class membroDao extends membro {
             return "Erro não indentificado";
         }
     }
-    public void readMembroDB(membro membro){
 
+    //le um membro no CloudFIrestore e retorna como JSON em caso de sucesso na operação
+    public String readMembroDB(String CPF)throws ExecutionException, InterruptedException{
+        membro membro;
 
+        if(validateMembro(CPF)=="0"){
+
+            DocumentReference docRef = db.collection("membro").document("CPF");
+            ApiFuture<DocumentSnapshot> future = docRef.get();
+            DocumentSnapshot document = future.get();
+            membro = document.toObject(membro.class);
+
+            Map<String, Object> docData = new HashMap<>();
+            docData.put("Nome", membro.getNome());
+            docData.put("CPF", membro.getCPF());
+            docData.put("Registro_UEB", membro.getRegistro_UEB());
+            docData.put("Link_foto", membro.getLink_foto());
+            docData.put("Date",membro.getDate());
+
+            Gson gson = new Gson();
+            String json= gson.toJson(docData);
+            return json;
+
+        }if(validateMembro(CPF)=="1"){
+            return "Usuario não encontrado";
+        }else{
+            return "Erro não indentificado";
+        }
     }
-
 
 
     public Firestore getDb() {
